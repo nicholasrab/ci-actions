@@ -38,3 +38,22 @@ jobs:
 
     - name: Build
       run: go build -v main.go
+
+  hadolint:
+    needs: build  # Run Hadolint after successful build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Hadolint  # Install Hadolint within the workflow
+        run: npm install -g hadolint
+
+      - name: Run Hadolint
+        run: |
+          # Encontrar todos os arquivos Dockerfile recursivamente
+          find . -type f -name 'Dockerfile' | xargs -I {} hadolint {}
+
+      - name: Fail if Hadolint finds errors  # Fail workflow if Hadolint encounters issues
+        if: steps.hadolint.outputs.hadolint_errors != ''
+        run: exit 1
+      
