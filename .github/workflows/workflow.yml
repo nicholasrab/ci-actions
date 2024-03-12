@@ -39,26 +39,29 @@ jobs:
     - name: Build
       run: go build -v main.go
 
-  hadolint:
+  dockle:
     needs: build  # Run Hadolint after successful build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Instalar curl
+      - name: Install dockle
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl
-      - name: Instalar Hadolint
-        run: |
-          curl -sL https://raw.githubusercontent.com/hadolint/hadolint/master/install.sh | bash -s -- -v
-  
-      - name: Run Hadolint
+          sudo apt-get install -y dockle
+       
+      - name: Run Dockle
         run: |
           # Encontrar todos os arquivos Dockerfile recursivamente
-          find . -type f -name 'Dockerfile' | xargs -I {} hadolint {}
+          find . -type f -name 'Dockerfile' | xargs -I {} dockle {}
 
-      - name: Fail if Hadolint finds errors  # Fail workflow if Hadolint encounters issues
-        if: steps.hadolint.outputs.hadolint_errors != ''
-        run: exit 1
+      - name: Check Dockle Results
+        run: |
+          # Verificar a saída do Dockle e gerar mensagem em caso de erro
+          if [ -f "dockle_results.txt" ]; then
+            cat dockle_results.txt
+            exit 1
+          else
+           echo "Dockle check passed"
+          fi
       
