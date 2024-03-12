@@ -45,12 +45,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Baixar script de instalação do Hadolint
-        run: wget https://raw.githubusercontent.com/hadolint/hadolint/master/install.sh
-
-      - name: Install Hadolint
+      - name: Instalar curl
         run: |
-         bash install.sh -- -v
+          sudo apt-get update
+          sudo apt-get install -y curl
+      - name: Instalar Hadolint
+        run: |
+          curl -sL https://raw.githubusercontent.com/hadolint/hadolint/master/install.sh | bash -s -- -v
   
       - name: Run Hadolint
         run: |
