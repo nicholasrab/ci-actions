@@ -45,10 +45,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Hadolint  # Install Hadolint within the workflow
-        run: |
-          curl -sL https://raw.githubusercontent.com/hadolint/hadolint/master/install.sh | bash -s -- -v
+      - name: Baixar script de instalação do Hadolint
+        run: wget https://raw.githubusercontent.com/hadolint/hadolint/master/install.sh
 
+      - name: Install Hadolint
+        run: |
+         bash install.sh -- -v
+  
       - name: Run Hadolint
         run: |
           # Encontrar todos os arquivos Dockerfile recursivamente
