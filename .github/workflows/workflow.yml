@@ -48,7 +48,20 @@ jobs:
       - name: Install dockle
         run: |
           sudo apt-get update
-          sudo apt-get install -y dockle
+          # Install dependencies (may be needed for some Dockle versions)
+          sudo apt install -y wget gnupg
+
+          # Download the Dockle GPG key
+          wget -q https://raw.githubusercontent.com/goodwithtech/dockle/master/packaging/debian-ubuntu/apt.gpg.key -O- | sudo apt-key add -
+
+          # Add the Dockle repository (adjust based on your Ubuntu version)
+          echo "deb [arch=amd64] https://packages.dockle.io/ stable/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/dockle.list
+
+          # Update package lists again
+          sudo apt update
+
+          # Install Dockle
+          sudo apt install -y dockle
        
       - name: Run Dockle
         run: |
