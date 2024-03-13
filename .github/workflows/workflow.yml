@@ -44,10 +44,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Update package lists (using dedicated action)
+        uses: actions/apt@v3
+        with:
+          cache: true 
 
-      - name: Fix lock file permissions 
-        run: |
-          sudo chmod 644 /var/lib/apt/lists/lock  # Use with caution!
+   #   - name: Fix lock file permissions 
+    #    run: |
+     #     sudo chmod 644 /var/lib/apt/lists/lock  # Use with caution!
       - name: Install Docker Bench Security
         run: |
            apt update
