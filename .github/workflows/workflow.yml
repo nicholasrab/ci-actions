@@ -49,7 +49,7 @@ jobs:
         docker pull hadolint/hadolint
     - name: Lint Dockerfile
       run: |
-        docker run --rm hadolint/hadolint $(find $GITHUB_WORKSPACE -name "Dockerfile" -type f)
+        docker run --rm hadolint/hadolint $(find . -regex ".*Dockerfile.*" -type f)
     - name: Upload results (optional)
       uses: actions/upload-artifact@v2
       with:
