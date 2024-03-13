@@ -39,24 +39,21 @@ jobs:
     - name: Build
       run: go build -v main.go
 
-  docker-bench-security:
-    needs: build  
+  hadolint:
+    needs: build  # Optional, if this job depends on a previous build job
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Pull Docker Bench Security image
-        run: |
-          docker pull docker/docker-bench-security
+    - uses: actions/checkout@v3
+    - name: Pull Hadolint image
+      run: |
+        docker pull hadolint/hadolint
+    - name: Lint Dockerfile
+      run: |
+        docker run --rm hadolint/hadolint hadolint Dockerfile
+    - name: Upload results (optional)
+      uses: actions/upload-artifact@v2
+      with:
+        name: hadolint-results
+        path: ${{ github.workspace }}/Dockerfile  # Upload the original Dockerfile
 
-      - name: Run Docker Bench Security
-        run: |
-          docker run --rm docker/docker-bench-security \
-            -f Dockerfile \
-            -o results.json
-
-      - name: Upload results
-        uses: actions/upload-artifact@v2
-        with:
-          name: docker-bench-security-results
-          path: results.json
           
