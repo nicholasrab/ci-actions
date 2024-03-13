@@ -45,37 +45,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install dockle
+      - name: Install Docker Bench Security
         run: |
           sudo apt-get update
-
-          # Add the Dockle repository (adjust based on your Ubuntu version)
-          echo "deb [arch=amd64] https://packages.dockle.io/ stable/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/dockle.list
-
-          # Create directory 
-          sudo mkdir -p /root/.gnupg/trusted.gpg.d
-          
-          # Import Dockle GPG key (using recommended approach)
-          curl -sL https://raw.githubusercontent.com/goodwithtech/dockle/master/packaging/debian-ubuntu/apt.gpg.key | sudo gpg --batch --keyring trusted.gpg.d --import -
-          
-          # Update package lists again
-          sudo apt update
-
-          # Install Dockle
-          sudo apt install -y dockle
-       
-      - name: Run Dockle
+          sudo apt install docker-bench-security
+      - name: Run Docker Bench Security
         run: |
-          # Encontrar todos os arquivos Dockerfile recursivamente
-          find . -type f -name 'Dockerfile' | xargs -I {} dockle {}
-
-      - name: Check Dockle Results
-        run: |
-          # Verificar a saída do Dockle e gerar mensagem em caso de erro
-          if [ -f "dockle_results.txt" ]; then
-            cat dockle_results.txt
-            exit 1
-          else
-           echo "Dockle check passed"
-          fi
-      
+          docker-bench-security --recursive
+          
