@@ -44,15 +44,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Install Docker Bench Security
-        run: |
-           apt update
-           apt intall curl
-      - name: Download Docker Bench Security
-        run: |
-          curl -L https://raw.githubusercontent.com/docker/docker-bench-security/master/docker-bench-security.sh -o docker-bench-security.sh      
+      - name: Pull Docker Bench Security image
+        uses: actions/docker/pull@v2
+        with:
+          image: docker/docker-bench-security
+
       - name: Run Docker Bench Security
         run: |
-          docker-bench-security --recursive
+          docker run --rm docker/docker-bench-security \
+            -f Dockerfile \
+            -o results.json
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-bench-security-results
+          path: results.json
           
