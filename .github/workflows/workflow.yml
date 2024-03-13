@@ -39,7 +39,7 @@ jobs:
     - name: Build
       run: go build -v main.go
 
-  dockle:
+  docker-bench-security:
     needs: build  # Run Hadolint after successful build
     runs-on: ubuntu-latest
     steps:
@@ -47,8 +47,8 @@ jobs:
 
       - name: Install Docker Bench Security
         run: |
-          sudo apt-get update
-          sudo apt install docker-bench-security
+          sudo apt update
+          sudo apt install docker-bench-security        
       - name: Run Docker Bench Security
         run: |
           docker-bench-security --recursive
