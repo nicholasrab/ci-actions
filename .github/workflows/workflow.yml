@@ -48,7 +48,10 @@ jobs:
       - name: Install Docker Bench Security
         run: |
           sudo apt update
-          sudo apt install docker-bench-security        
+          sudo apt intall curl
+      - name: Download Docker Bench Security
+        run: |
+          curl -L https://raw.githubusercontent.com/docker/docker-bench-security/master/docker-bench-security.sh -o docker-bench-security.sh      
       - name: Run Docker Bench Security
         run: |
           docker-bench-security --recursive
