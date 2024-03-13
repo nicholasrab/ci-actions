@@ -45,6 +45,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Fix lock file permissions 
+        run: |
+          sudo chmod 644 /var/lib/apt/lists/lock  # Use with caution!
       - name: Install Docker Bench Security
         run: |
            apt update
