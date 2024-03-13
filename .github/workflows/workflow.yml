@@ -28,7 +28,7 @@ jobs:
       run: docker-compose up -d
 
     - name: Test
-      run: go test -v main_teste.go
+      run: go test -v main_test.go
 
   build:
     needs: test
@@ -38,3 +38,22 @@ jobs:
 
     - name: Build
       run: go build -v main.go
+
+  hadolint:
+    needs: build  # Optional, if this job depends on a previous build job
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Pull Hadolint image
+      run: |
+        docker pull hadolint/hadolint
+    - name: Lint Dockerfile
+      run: |
+        docker run --rm hadolint/hadolint hadolint ${{ github.workspace }}/Dockerfile
+    - name: Upload results (optional)
+      uses: actions/upload-artifact@v2
+      with:
+        name: hadolint-results
+        path: ${{ github.workspace }}/Dockerfile  # Upload the original Dockerfile
+
+          
