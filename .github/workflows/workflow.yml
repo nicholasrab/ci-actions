@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Pull Docker Bench Security image
-        uses: actions/docker/pull@v2
+        uses: actions/docker/pull@v3
         with:
           image: docker/docker-bench-security
 
