@@ -51,7 +51,7 @@ jobs:
       run: |
         pwd
         ls -la
-        docker run --rm hadolint/hadolint $(find . -regex ".*Dockerfile.*" -type f)
+        docker run --rm hadolint/hadolint /home/runner/work/ci-actions/ci-actions/Dockerfile
     - name: Upload results (optional)
       uses: actions/upload-artifact@v2
       with:
