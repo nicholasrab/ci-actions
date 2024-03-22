@@ -49,6 +49,8 @@ jobs:
         docker pull hadolint/hadolint
     - name: Lint Dockerfile
       run: |
+        pwd
+        ls -la
         docker run --rm hadolint/hadolint $(find . -regex ".*Dockerfile.*" -type f)
     - name: Upload results (optional)
       uses: actions/upload-artifact@v2
