@@ -53,7 +53,7 @@ jobs:
       run: |
         pwd
         ls -la
-        docker run --rm hadolint/hadolint ./Dockerfile
+        docker run -i --rm hadolint/hadolint < Dockerfile
     - name: Upload results (optional)
       uses: actions/upload-artifact@v2
       with:
