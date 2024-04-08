@@ -49,9 +49,10 @@ jobs:
     - name: Pull Hadolint image
       run: |
         docker pull hadolint/hadolint
-    - name: Lint Dockerfiles
+    - name: Lint Dockerfiles com diretórios
       run: |
-        find . -name "Dockerfile" -print | xargs -I {} sh -c 'docker run -i --rm hadolint/hadolint < {}'
+        find . -name "Dockerfile" -print0 | xargs -0 -I {} sh -c 'echo "$(dirname {})/{}" && docker run -i --rm hadolint/hadolint < {}'
+
 
 
     - name: Upload results (optional)
