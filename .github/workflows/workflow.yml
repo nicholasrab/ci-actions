@@ -40,20 +40,19 @@ jobs:
       run: go build -v main.go
 
   hadolint:
-    needs: build  # Optional, if this job depends on a previous build job
-    runs-on: ubuntu-latest
-    steps:
+   needs: build  # Opcional, se este job depende de um job de build anterior
+   runs-on: ubuntu-latest
+   steps:
     - uses: actions/checkout@v3
       with:
         working-directory: /home/runner/work/ci-actions/ci-actions
     - name: Pull Hadolint image
       run: |
         docker pull hadolint/hadolint
-    - name: Lint Dockerfile
+    - name: Lint Dockerfiles
       run: |
-        pwd
-        ls -la
-        docker run -i --rm hadolint/hadolint < Dockerfile
+        find . -name "Dockerfile" -print | xargs -I {} docker run -i --rm hadolint/hadolint {}
+
     - name: Upload results (optional)
       uses: actions/upload-artifact@v2
       with:
