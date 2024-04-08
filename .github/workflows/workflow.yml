@@ -51,7 +51,8 @@ jobs:
         docker pull hadolint/hadolint
     - name: Lint Dockerfiles
       run: |
-        find . -name "Dockerfile" -print | xargs -I {} docker run -i --rm hadolint/hadolint {}
+        find . -name "Dockerfile" -print | xargs -I {} sh -c 'docker run -i --rm hadolint/hadolint < {}'
+
 
     - name: Upload results (optional)
       uses: actions/upload-artifact@v2
